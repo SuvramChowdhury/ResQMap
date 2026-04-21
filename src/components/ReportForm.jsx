@@ -1,8 +1,9 @@
-import {X} from 'lucide-react';
-import { useRef } from 'react';
-
+import {X,Camera,Check} from 'lucide-react';
+import { useRef, useState } from 'react';
+import CameraModal from './CameraModal';
 const ReportForm = ({props})=>{
-    console.log(props)
+    const [camera, showCamera]= useState(false)
+    const [showCheck, setShowCheck]= useState(false);
     const modalRef = useRef();
 
     const Close= (e)=>{
@@ -17,17 +18,22 @@ const ReportForm = ({props})=>{
 
             <button className='place-self-end mb-0.5' onClick={props}><X size={30}/></button>
             <div className='bg-gray-800 rounded-xl h-full overflow-auto '>
-                <form className='flex flex-col h-full'>
-                    <textarea className='bg-cyan-400 rounded-xl h-2/3 m-1'></textarea>
+                <form className='flex flex-col overflow-auto scrollbar-hide'>
+                    <textarea className='bg-gray-50 rounded-xl h-40 m-1 text-xl p-1 px-2' placeholder='Write the Emergency'></textarea>
                     <h3 className=' mb-1 text-2xl text-gray-400 text-center'>Emergency Rating:</h3>
 
                     <div className='m-2 flex justify-evenly text-white'>
-                        <button className='bg-red-700 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Critical</button>
-                        <button className='bg-orange-700 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>High</button>
-                        <button className='bg-amber-500 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Moderate</button>
-                        <button className='bg-cyan-800 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Low</button>
+                        <button type='button' className='bg-red-700 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Critical</button>
+                        <button type='button' className='bg-orange-700 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>High</button>
+                        <button type='button' className='bg-amber-500 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Moderate</button>
+                        <button type='button' className='bg-cyan-800 active:scale-75 p-2 rounded-2xl font-medium font-mono text-lg'>Low</button>
                     </div>
-                    
+
+                    <button onClick={()=>showCamera(true)} type='button' className='flex gap-2 place-self-center p-2 bg-gray-50 rounded-2xl text-md items-center'><Camera /> Upload Photo {showCheck && <Check size={20} />}</button>
+
+                    <button className='bg-red-500 m-2 p-2 text-xl text-white rounded-xl w-fit place-self-center' type="submit">Submit Report</button>
+
+                    {camera && <CameraModal onClick={()=>setShowCheck(true)}/>}
                 </form>
             </div>
             </div>
