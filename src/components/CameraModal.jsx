@@ -1,10 +1,10 @@
-const CameraModal = ({onClick})=>{
+const CameraModal = ()=>{
     return(
         <div className="fixed inset-0 flex justify-center items-center">
-            <video src=""></video>
+            <video ></video>
             <canvas></canvas>
-            <img src="" alt="" />
-            <button className="bg-white rounded-full" onClick={onClick}></button>
+            <img/>
+            <button className="bg-white rounded-full "></button>
         </div>
     )
 }

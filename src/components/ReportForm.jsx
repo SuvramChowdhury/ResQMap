@@ -33,7 +33,7 @@ const ReportForm = ({props})=>{
 
                     <button className='bg-red-500 m-2 p-2 text-xl text-white rounded-xl w-fit place-self-center' type="submit">Submit Report</button>
 
-                    {camera && <CameraModal onClick={()=>setShowCheck(true)}/>}
+                    {camera && <CameraModal />}
                 </form>
             </div>
             </div>
