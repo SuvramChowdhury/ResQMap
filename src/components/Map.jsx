@@ -1,6 +1,6 @@
 const Map = ()=>{
     return (
-        <div className='h-screen overflow-auto bg-green-500'></div>
+        <div className='h-screen overflow-auto bg-green-300'></div>
     )
 }
 export default Map
