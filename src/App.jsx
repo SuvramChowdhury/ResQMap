@@ -3,7 +3,7 @@ import Map from './components/Map.jsx'
 import Footer from './components/Footer.jsx'
 const App=()=>{
   return(
-    <div>
+    <div className='h-screen'>
       <Navbar/>
       <Map/>
       <Footer/>
