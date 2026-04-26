@@ -1,6 +1,6 @@
 import {X,Camera,Check} from 'lucide-react';
 import { useRef, useState } from 'react';
-import { createPortal } from "react-dom";
+import {createPortal} from 'react-dom';
 import CameraModal from './CameraModal';
 const ReportForm = ({props})=>{
     const [showCheck, setShowCheck]= useState(false);
