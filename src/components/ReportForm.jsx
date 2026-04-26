@@ -1,5 +1,6 @@
 import {X,Camera,Check} from 'lucide-react';
 import { useRef, useState } from 'react';
+import { createPortal } from "react-dom";
 import CameraModal from './CameraModal';
 const ReportForm = ({props})=>{
     const [camera, showCamera]= useState(false)
@@ -12,12 +13,12 @@ const ReportForm = ({props})=>{
         }
     }
 
-    return(
-        <div ref={modalRef} onClick={Close} className="fixed inset-0 bg-gray-300/30 backdrop-blur-sm flex flex-col justify-center items-center">
+    return createPortal(
+        <div ref={modalRef} onClick={Close} className="fixed top-0 left-0 right-0 bottom-0 z-2147483647 bg-gray-300/30 backdrop-blur-sm flex flex-col justify-center items-center">
             <div className='flex flex-col w-1/3 h-1/2'>
 
             <button className='place-self-end mb-0.5' onClick={props}><X size={30}/></button>
-            <div className='bg-gray-800 rounded-xl h-full overflow-auto '>
+            <div className='bg-gray-800 rounded-xl h-full '>
                 <form className='flex flex-col overflow-auto scrollbar-hide'>
                     <textarea className='bg-gray-50 rounded-xl h-40 m-1 text-xl p-1 px-2' placeholder='Write the Emergency'></textarea>
                     <h3 className=' mb-1 text-2xl text-gray-400 text-center'>Emergency Rating:</h3>
@@ -37,7 +38,8 @@ const ReportForm = ({props})=>{
                 </form>
             </div>
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }
 export default ReportForm;

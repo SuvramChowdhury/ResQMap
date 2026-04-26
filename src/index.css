@@ -3,3 +3,11 @@
 .leaflet-container{
     height:80vh
 }
+
+.leaflet-container,
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control {
+  z-index: 1 !important;
+}
