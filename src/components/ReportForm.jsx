@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import {createPortal} from 'react-dom';
 import CameraModal from './CameraModal';
 const ReportForm = ({props})=>{
-    const [showCheck, setShowCheck]= useState(false);
     const modalRef = useRef();
 
     const Close= (e)=>{
@@ -41,7 +40,11 @@ const ReportForm = ({props})=>{
                         
                     </div>
 
-                    <button onClick={()=>showCamera(true)} type='button' className='flex gap-2 place-self-center p-2 bg-gray-50 rounded-2xl text-md items-center'><Camera /> Upload Photo {showCheck && <Check size={20} />}</button>
+                    <label className='flex gap-2 place-self-center p-2 bg-gray-50 rounded-2xl text-md items-center w-fit'><Camera />Upload Photo
+                        <input type='file' capture='environment' accept='image/*' className='w-0' />
+                    </label>
+                    
+                    
 
                     <button className='bg-red-500 m-2 p-2 text-xl text-white rounded-xl w-fit place-self-center' type="submit">Submit Report</button>
 
