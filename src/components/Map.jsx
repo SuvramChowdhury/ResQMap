@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
 import { Icon } from 'leaflet'
@@ -27,7 +27,7 @@ const Map = ()=>{
   })
     if (!coord) return <h2>Loading Map</h2>;        
     return (
-        <MapContainer center={coord} zoom={15}>
+        <MapContainer center={coord} zoom={18}>
             <TileLayer 
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'/>
