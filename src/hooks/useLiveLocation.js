@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getDistance } from "../utils/distance";
 
+
 export function useLiveLocation({
   enableHighAccuracy = true,
   timeout = 10000,
@@ -46,7 +47,7 @@ export function useLiveLocation({
       (err) => {
         switch (err.code) {
           case 1:
-            setError("Permission denied");
+            setError("Location Access denied");
             break;
           case 2:
             setError("Position unavailable");
