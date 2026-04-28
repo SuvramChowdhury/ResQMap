@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { getDistance } from "../utils/distance";
 
-
 export function useLiveLocation({
   enableHighAccuracy = true,
   timeout = 10000,
-  maximumAge = 5000,
+  maximumAge = 0,
   distanceThreshold = 15,
 } = {}) {
   const [coords, setCoords] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const watchIdRef = useRef(null);
 
   const startTracking = () => {
@@ -34,8 +32,17 @@ export function useLiveLocation({
         };
 
         setCoords((prev) => {
-          if(!prev) return newCoords;
+          if (!prev) return newCoords;
+
           const distance = getDistance(prev, newCoords);
+
+          if (
+            newCoords.accuracy &&
+            prev.accuracy &&
+            newCoords.accuracy < prev.accuracy
+          ) {
+            return newCoords;
+          }
 
           if (distance < distanceThreshold) return prev;
 
@@ -48,7 +55,7 @@ export function useLiveLocation({
       (err) => {
         switch (err.code) {
           case 1:
-            setError("Location Access denied");
+            setError("Location access denied");
             break;
           case 2:
             setError("Position unavailable");
@@ -65,7 +72,7 @@ export function useLiveLocation({
         enableHighAccuracy,
         timeout,
         maximumAge,
-      },
+      }
     );
   };
 
@@ -78,7 +85,7 @@ export function useLiveLocation({
 
   useEffect(() => {
     startTracking();
-    return stopTracking;
+    return () => stopTracking();
   }, []);
 
   return {
