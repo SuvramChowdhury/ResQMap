@@ -34,6 +34,7 @@ export function useLiveLocation({
         };
 
         setCoords((prev) => {
+          if(!prev) return newCoords;
           const distance = getDistance(prev, newCoords);
 
           if (distance < distanceThreshold) return prev;
