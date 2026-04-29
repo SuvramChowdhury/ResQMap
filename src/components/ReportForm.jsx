@@ -22,7 +22,7 @@ const ReportForm = ({ onClose, coords }) => {
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       className="fixed inset-0 z-2147483647 bg-gray-300/30 backdrop-blur-sm flex justify-center items-center font-[Montserrat] p-4"
     >
-      <div className="flex flex-col w-full sm:w-1/2 xl:w-1/3 max-h-[90vh]">
+      <div className="flex flex-col w-full max-h-[90vh] sm:w-1/2 xl:w-1/3 ">
 
         <button className="place-self-end mb-1 text-white" onClick={onClose}>
           <X size={30} />
