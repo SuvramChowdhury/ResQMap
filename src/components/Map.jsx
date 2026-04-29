@@ -52,9 +52,12 @@ const Map = ({ coords, error, loading }) => {
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <RecenterMap coords={coords} />
+
+      
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
         <Popup>Your Location</Popup>
       </Marker>
+
     </MapContainer>
   );
 };
