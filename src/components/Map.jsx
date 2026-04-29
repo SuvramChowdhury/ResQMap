@@ -3,11 +3,9 @@ import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 import L from "leaflet";
 import pin from "../assets/alarm.png";
-import { useLiveLocation } from "../hooks/useLiveLocation";
 
 const RecenterMap = ({ coords }) => {
   const map = useMap();
-
   useEffect(() => {
     if (coords) {
       map.flyTo([coords.lat, coords.lng], map.getZoom(), {
@@ -16,24 +14,32 @@ const RecenterMap = ({ coords }) => {
       });
     }
   }, [coords, map]);
-
   return null;
 };
 
-const Map = () => {
-  const { coords, error, loading } = useLiveLocation();
-
+const Map = ({ coords, error, loading }) => {
   const customIcon = L.icon({
     iconUrl: pin,
     iconSize: [30, 30],
   });
 
-  if (loading) return <h2>Loading Map</h2>;
+  if (loading) return (
+    <div className="flex items-center justify-center h-full">
+      <h2 className="text-xl font-bold">Loading Map...</h2>
+    </div>
+  );
 
-  if (error)
-    return (
+  if (error) return (
+    <div className="flex items-center justify-center h-full">
       <h2 className="text-center font-bold text-red-800 text-4xl">{error}</h2>
-    );
+    </div>
+  );
+
+  if (!coords) return (
+    <div className="flex items-center justify-center h-full">
+      <h2 className="text-xl font-bold">Waiting for GPS...</h2>
+    </div>
+  );
 
   return (
     <MapContainer

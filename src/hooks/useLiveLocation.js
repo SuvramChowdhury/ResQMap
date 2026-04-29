@@ -32,18 +32,18 @@ export function useLiveLocation({
         };
 
         setCoords((prev) => {
+          // ✅ always accept first reading
           if (!prev) return newCoords;
 
-          const distance = getDistance(prev, newCoords);
-
+          // ✅ ignore if accuracy got worse
           if (
             newCoords.accuracy &&
             prev.accuracy &&
-            newCoords.accuracy < prev.accuracy
-          ) {
-            return newCoords;
-          }
+            newCoords.accuracy > prev.accuracy * 1.5
+          ) return prev;
 
+          // ✅ ignore tiny movements
+          const distance = getDistance(prev, newCoords);
           if (distance < distanceThreshold) return prev;
 
           return newCoords;
@@ -55,7 +55,7 @@ export function useLiveLocation({
       (err) => {
         switch (err.code) {
           case 1:
-            setError("Location access denied");
+            setError("Location Access denied");
             break;
           case 2:
             setError("Position unavailable");
@@ -72,7 +72,7 @@ export function useLiveLocation({
         enableHighAccuracy,
         timeout,
         maximumAge,
-      }
+      },
     );
   };
 
@@ -85,7 +85,7 @@ export function useLiveLocation({
 
   useEffect(() => {
     startTracking();
-    return () => stopTracking();
+    return stopTracking;
   }, []);
 
   return {
