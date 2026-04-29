@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 import L from "leaflet";
@@ -44,7 +44,7 @@ const Map = ({ coords, error, loading }) => {
   return (
     <MapContainer
       center={[coords.lat, coords.lng]}
-      zoom={18}
+      zoom={16}
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer
@@ -53,7 +53,7 @@ const Map = ({ coords, error, loading }) => {
       />
       <RecenterMap coords={coords} />
 
-      
+      <Circle center={[coords.lat, coords.lng]} radius={500} pathOptions={{color:'red'}}/>
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
         <Popup>Your Location</Popup>
       </Marker>
