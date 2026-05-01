@@ -3,7 +3,8 @@ import ReportForm from "./ReportForm";
 import Reports from "./Reports";
 import { createPortal } from "react-dom";
 import { Plus } from "lucide-react";
-
+import NearbyReports from "./NearbyReports";
+import RecentReport from './RecentReport'
 const Footer = ({ coords }) => {
   const [reportModal, setReportModal] = useState(false);
   const [presentTab,setPresentTab]= useState('Nearby');
@@ -23,25 +24,13 @@ const Footer = ({ coords }) => {
       <div className="flex flex-col w-full h-full justify-start lg:w-fit lg:flex-row">
 
         <div className="flex flex-row justify-center w-full h-1/3 lg:h-full lg:w-30 lg:flex-col border-gray-500 md:border-l-2 ">
-          <button onClick={()=> setPresentTab('Nearby')} className="bg-amber-200 text-lg h-full lg:h-1/2 py-1 w-full text-cyan-800">Nearby</button>
-          <button onClick={()=> setPresentTab('Recent')} className="bg-amber-100 text-lg h-full lg:h-1/2 w-full py-1 text-cyan-800">Recent</button>
+          <button onClick={()=> setPresentTab('Nearby')} className={` text-lg h-full lg:h-1/2 py-1 w-full text-cyan-800 ${presentTab=='Nearby'? 'bg-amber-200':'bg-amber-100'}`}>Nearby</button>
+          <button onClick={()=> setPresentTab('Recent')} className={` text-lg h-full lg:h-1/2 w-full py-1 text-cyan-800 ${presentTab=='Recent'? 'bg-amber-200':'bg-amber-100'}`}>Recent</button>
         </div>
 
         {/*reports display */}
-        <div className=" py-0.5 px-2 bg-amber-200 w-full h-2/3
-       flex flex-row gap-2 items-center justify-start rounded-r-xl overflow-scroll font-semibold
-        md:text-lg md:h-full
-        lg:flex-wrap lg:h-full lg:overflow-x-auto">
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-          <Reports />
-        </div>
+        {presentTab=='Nearby' && <NearbyReports/>}
+        {presentTab=='Recent' && <RecentReport/>}
       </div>
 
       {reportModal && (
