@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   collection,
   onSnapshot,
@@ -6,36 +6,71 @@ import {
   where,
   orderBy,
   Timestamp,
+  writeBatch,
+  doc,
 } from "firebase/firestore";
 import { db } from "./firestore";
+import { getDistance } from "../utils/distance";
+import { sendNotification } from "../utils/notify";
 
-export const useReports = () => {
+const RADIUS_M = 500;
+
+export const useReports = (userCoords) => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [now, setNow] = useState(Timestamp.now());
+  const seenIds = useRef(new Set());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(Timestamp.now());
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
+    if (!userCoords) return;
 
-  useEffect(() => {
+    const latDelta = RADIUS_M / 111000;
+    const lngDelta =
+      RADIUS_M / (111000 * Math.cos(userCoords.lat * (Math.PI / 180)));
+
     const q = query(
       collection(db, "reports"),
       where("expiresAt", ">", Timestamp.now()),
-      orderBy("expiresAt", "asc")
+      where("lat", ">", userCoords.lat - latDelta),
+      where("lat", "<", userCoords.lat + latDelta),
+      orderBy("lat", "asc")
     );
 
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const now = Timestamp.now();
+        const batch = writeBatch(db);
+        let hasDeletions = false;
+
+        const data = snapshot.docs
+          .map((d) => ({ id: d.id, ...d.data() }))
+          .filter((report) => {
+            // cleanup expired
+            if (report.expiresAt.seconds <= now.seconds) {
+              batch.delete(doc(db, "reports", report.id));
+              hasDeletions = true;
+              return false;
+            }
+
+            // precise 500m circle filter
+            const dist = getDistance(userCoords, {
+              lat: report.lat,
+              lng: report.lng,
+            });
+            return dist <= RADIUS_M;
+          });
+
+        if (hasDeletions) batch.commit();
+
+        // notify for new reports only
+        data.forEach((report) => {
+          if (!seenIds.current.has(report.id)) {
+            sendNotification(report);
+            seenIds.current.add(report.id);
+          }
+        });
+
         setReports(data);
         setLoading(false);
         setError(null);
@@ -48,11 +83,7 @@ export const useReports = () => {
     );
 
     return () => unsubscribe();
-  }, []);
+  }, [userCoords?.lat, userCoords?.lng]);
 
-  const filteredReports = reports.filter(
-    (report) => report.expiresAt.seconds > now.seconds
-  );
-
-  return { reports: filteredReports, loading, error };
+  return { reports, loading, error };
 };

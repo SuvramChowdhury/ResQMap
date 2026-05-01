@@ -5,9 +5,12 @@ import Footer from "./components/Footer.jsx";
 import { useEffect } from "react";
 import { initAuth } from "./firebase/auth.js";
 import { useLiveLocation } from "./hooks/useLiveLocation.js";
+import { useReports } from "./firebase/useReports.js";
+import { requestNotificationPermission } from "./utils/notify.js";
 
 const App = () => {
   const { coords, error, loading } = useLiveLocation();
+  const { reports } = useReports(coords);
 
   useEffect(() => {
     const setupAuth = async () => {
@@ -15,6 +18,7 @@ const App = () => {
       console.log("User ID:", uid);
     };
     setupAuth();
+    requestNotificationPermission();
   }, []);
 
   return (
@@ -22,7 +26,7 @@ const App = () => {
       <Navbar />
       <Navbar2 />
       <div className="flex-1 relative">
-        <Map coords={coords} error={error} loading={loading} />
+        <Map coords={coords} error={error} loading={loading} reports={reports} />
       </div>
       <Footer coords={coords} />
     </div>
