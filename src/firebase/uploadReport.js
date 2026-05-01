@@ -1,5 +1,10 @@
 import { db } from "./firestore.js";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { initAuth } from "./auth.js";
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -16,7 +21,7 @@ const uploadToCloudinary = async (photo) => {
     {
       method: "POST",
       body: formData,
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Cloudinary upload failed");
@@ -25,7 +30,12 @@ const uploadToCloudinary = async (photo) => {
   return data.secure_url;
 };
 
-export const uploadReport = async ({ description, intensity, coords, photo }) => {
+export const uploadReport = async ({
+  description,
+  intensity,
+  coords,
+  photo,
+}) => {
   const uid = await initAuth();
 
   let photoURL = null;
@@ -44,7 +54,7 @@ export const uploadReport = async ({ description, intensity, coords, photo }) =>
     downvotes: 0,
     votedBy: {},
     createdAt: serverTimestamp(),
-    expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
+    expiresAt: Timestamp.fromDate(new Date(Date.now() + 2 * 60 * 60 * 1000)),
   });
 
   return docRef.id;
