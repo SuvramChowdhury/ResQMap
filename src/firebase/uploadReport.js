@@ -27,7 +27,12 @@ const uploadToCloudinary = async (photo) => {
   if (!res.ok) throw new Error("Cloudinary upload failed");
 
   const data = await res.json();
-  return data.secure_url;
+  const transformedURL = data.secure_url.replace(
+    "/upload/",
+    "/upload/w_600,h_400,c_fill,q_auto,f_auto/",
+  );
+
+  return transformedURL;
 };
 
 export const uploadReport = async ({
