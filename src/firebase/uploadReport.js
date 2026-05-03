@@ -1,9 +1,35 @@
 import { db } from "./firestore.js";
-import { storage } from "./storage.js";
-
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { initAuth } from "./auth.js";
+
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+const uploadToCloudinary = async (photo) => {
+  const formData = new FormData();
+  formData.append("file", photo);
+  formData.append("upload_preset", UPLOAD_PRESET);
+  formData.append("folder", "resqmap/reports");
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+
+  if (!res.ok) throw new Error("Cloudinary upload failed");
+
+  const data = await res.json();
+  return data.secure_url;
+};
+
 export const uploadReport = async ({
   description,
   intensity,
@@ -11,11 +37,10 @@ export const uploadReport = async ({
   photo,
 }) => {
   const uid = await initAuth();
+
   let photoURL = null;
   if (photo) {
-    const storageRef = ref(storage, `reports/${uid}/${Date.now()}`);
-    await uploadBytes(storageRef, photo);
-    photoURL = await getDownloadURL(storageRef);
+    photoURL = await uploadToCloudinary(photo);
   }
 
   const docRef = await addDoc(collection(db, "reports"), {
@@ -27,8 +52,10 @@ export const uploadReport = async ({
     lng: coords.lng,
     upvotes: 0,
     downvotes: 0,
+    votedBy: {},
     createdAt: serverTimestamp(),
-    expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000), // Expires in 2 hours
+    expiresAt: Timestamp.fromDate(new Date(Date.now() + 2 * 60 * 60 * 1000)),
   });
+
   return docRef.id;
 };
