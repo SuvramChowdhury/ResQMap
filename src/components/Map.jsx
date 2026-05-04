@@ -1,7 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import L from "leaflet";
+import CustomPopup from "./CustomPopup";
 import pin from "../assets/alarm.png";
 
 const RecenterMap = ({ coords }) => {
@@ -55,7 +56,9 @@ const Map = ({ coords, error, loading }) => {
 
       <Circle center={[coords.lat, coords.lng]} radius={500} pathOptions={{color:'red'}}/>
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
-        <Popup>Your Location</Popup>
+        <Popup  className="custom-popup">
+          <CustomPopup/>
+        </Popup>
       </Marker>
 
     </MapContainer>

@@ -11,3 +11,8 @@
 .leaflet-control {
   z-index: 1 !important;
 }
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background-color: rgb(62, 61, 61); /* your color */
+  color: white; /* text color */
+} 
