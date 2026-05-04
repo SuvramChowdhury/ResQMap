@@ -10,7 +10,7 @@ import { requestNotificationPermission } from "./utils/notify.js";
 
 const App = () => {
   const { coords, error, loading } = useLiveLocation();
-  const { reports } = useReports(coords);
+  const { reports,loading,error } = useReports(coords);
   const ReportData = createContext();
   useEffect(() => {
     const setupAuth = async () => {
