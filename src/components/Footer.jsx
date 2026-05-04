@@ -10,7 +10,7 @@ const Footer = ({ coords }) => {
   const [presentTab,setPresentTab]= useState('Nearby');
 
   return createPortal(
-    <div className="font-[Outfit] fixed bottom-0 z-2147483646 flex flex-col justify-start items-center gap-2 bg-amber-50 w-[98%] h-45 p-2 mx-4  rounded-2xl lg:flex-row lg:h-25 lg:items-center lg:gap-3 xl:items-center xl:gap-4 ">
+    <div className="font-[Outfit] fixed bottom-0 z-2147483646 flex flex-col justify-start items-center gap-2 bg-amber-50 w-[98%] h-45 p-2 mx-4  rounded-2xl lg:flex-row lg:h-30 lg:items-center lg:gap-3 xl:items-center xl:gap-4 ">
       
       {/*Add Report button */}
       <button
@@ -23,7 +23,7 @@ const Footer = ({ coords }) => {
 
       <div className="flex flex-col w-full h-full justify-start lg:w-fit lg:flex-row">
 
-        <div className="flex flex-row justify-center w-full h-1/3 lg:h-full lg:w-30 lg:flex-col border-gray-500 md:border-l-2 ">
+        <div className="flex flex-row justify-center w-full h-1/4 lg:h-full lg:w-30 lg:flex-col border-gray-500 md:border-l-2 ">
           <button onClick={()=> setPresentTab('Nearby')} className={` text-lg h-full lg:h-1/2 py-1 w-full text-cyan-800 ${presentTab=='Nearby'? 'bg-amber-200':'bg-amber-100'}`}>Nearby</button>
           <button onClick={()=> setPresentTab('Recent')} className={` text-lg h-full lg:h-1/2 w-full py-1 text-cyan-800 ${presentTab=='Recent'? 'bg-amber-200':'bg-amber-100'}`}>Recent</button>
         </div>
