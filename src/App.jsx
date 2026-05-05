@@ -7,12 +7,12 @@ import { initAuth } from "./firebase/auth.js";
 import { useLiveLocation } from "./hooks/useLiveLocation.js";
 import { useReports } from "./firebase/useReports.js";
 import { requestNotificationPermission } from "./utils/notify.js";
-
+export const ReportData = createContext();
 const App = () => {
   const { coords, error, loading } = useLiveLocation();
   const { reports, isLoading, isError } = useReports(coords);
   
-  const ReportData = createContext();
+  
   useEffect(() => {
     const setupAuth = async () => {
       const uid = await initAuth();
