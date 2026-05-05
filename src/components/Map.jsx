@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import React, { useEffect } from "react";
 import L from "leaflet";
 import CustomPopup from "./CustomPopup";
-import pin from "../assets/alarm.png";
+import pin from "../assets/gps.png";
 
 const RecenterMap = ({ coords }) => {
   const map = useMap();

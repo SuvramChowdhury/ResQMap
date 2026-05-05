@@ -10,7 +10,8 @@ import { requestNotificationPermission } from "./utils/notify.js";
 
 const App = () => {
   const { coords, error, loading } = useLiveLocation();
-  const { reports } = useReports(coords);
+  const { reports, isLoading, isError } = useReports(coords);
+  
   const ReportData = createContext();
   useEffect(() => {
     const setupAuth = async () => {
@@ -27,7 +28,7 @@ const App = () => {
       <Navbar2 />
       
       {/*Providing Context to Both Map And Footer Component */}
-      <ReportData.Provider value={reports} >
+      <ReportData.Provider value={{reports, isLoading, isError}} >
 
         <div className="flex-1 relative">
           <Map coords={coords} error={error} loading={loading} reports={reports} />

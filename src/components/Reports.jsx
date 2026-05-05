@@ -1,7 +1,10 @@
 import React from "react"
 import { CircleArrowDown , CircleArrowUp} from "lucide-react"
 import warningLogo from '../assets/warning.png'
+import { useContext } from "react"
+import {ReportData} from '../App'
 const Reports = ()=>{
+  const {reports, isLoading, isError} = useContext(ReportData)
     return(
         <div className=" rounded-2xl px-2 bg-gray-800 border-4 border-gray-600 text-gray-200 w-full select-none h-full
         flex flex-col items-center 

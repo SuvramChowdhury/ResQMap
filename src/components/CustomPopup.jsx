@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CircleArrowUp, CircleArrowDown } from "lucide-react";
 import warningLogo from '../assets/warning.png'
+import {ReportData} from '../App'
 const CustomPopup = ()=>{
+  const {report, isLoading, isError}= useContext(ReportData)
   return(
     <div className="max-w-60 flex flex-col items-start justify-around gap-2 ">
             {/*Heading */}
