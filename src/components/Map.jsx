@@ -1,4 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Circle,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect } from "react";
 import L from "leaflet";
@@ -18,29 +25,32 @@ const RecenterMap = ({ coords }) => {
   return null;
 };
 
-const Map = ({ coords, error, loading }) => {
+const Map = ({ coords, error, loading, reports = [], uid }) => {
   const customIcon = L.icon({
     iconUrl: pin,
     iconSize: [30, 30],
   });
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-full">
-      <h2 className="text-xl font-bold">Loading Map...</h2>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h2 className="text-xl font-bold">Loading Map...</h2>
+      </div>
+    );
 
-  if (error) return (
-    <div className="flex items-center justify-center h-full">
-      <h2 className="text-center font-bold text-red-800 text-4xl">{error}</h2>
-    </div>
-  );
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h2 className="text-center font-bold text-red-800 text-4xl">{error}</h2>
+      </div>
+    );
 
-  if (!coords) return (
-    <div className="flex items-center justify-center h-full">
-      <h2 className="text-xl font-bold">Waiting for GPS...</h2>
-    </div>
-  );
+  if (!coords)
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h2 className="text-xl font-bold">Waiting for GPS...</h2>
+      </div>
+    );
 
   return (
     <MapContainer
@@ -54,13 +64,28 @@ const Map = ({ coords, error, loading }) => {
       />
       <RecenterMap coords={coords} />
 
-      <Circle center={[coords.lat, coords.lng]} radius={500} pathOptions={{color:'red'}}/>
+      <Circle
+        center={[coords.lat, coords.lng]}
+        radius={500}
+        pathOptions={{ color: "red" }}
+      />
+      {/* Your location marker */}
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
-        <Popup  className="custom-popup">
-          <CustomPopup/>
-        </Popup>
+        <Popup>You are here</Popup>
       </Marker>
 
+      {/* Report markers from Firestore */}
+      {reports.map((report) => (
+        <Marker
+          key={report.id}
+          position={[report.lat, report.lng]}
+          icon={customIcon}
+        >
+          <Popup className="custom-popup">
+            <CustomPopup report={report} uid={uid} />
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };
