@@ -6,12 +6,44 @@ import {
   useMap,
   Circle,
 } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import "leaflet/dist/leaflet.css";
 import React, { useEffect } from "react";
 import L from "leaflet";
 import CustomPopup from "./CustomPopup";
 import pin from "../assets/gps.png";
 import alertPin from '../assets/alarm.png'
+
+const clusterIcon = (cluster) => {
+  const count = cluster.getChildCount();
+
+  let color = "#22c55e"; // low
+  if (count >= 3) color = "#f59e0b";
+  if (count > 5) color = "#ef4444";
+
+  return L.divIcon({
+    html: `
+      <div
+        style="
+          background:${color};
+          width:50px;
+          height:50px;
+          border-radius:50%;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          color:white;
+          font-weight:bold;
+        "
+      >
+        ${count}
+      </div>
+    `,
+    className: "",
+    iconSize: [40, 40],
+  });
+};
+
 const RecenterMap = ({ coords }) => {
   const map = useMap();
   useEffect(() => {
@@ -72,6 +104,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
         radius={500}
         pathOptions={{ color: "red" }}
       />
+      <MarkerClusterGroup iconCreateFunction={clusterIcon}>
       {/* Your location marker */}
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
         <Popup>You are here</Popup>
@@ -89,6 +122,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
           </Popup>
         </Marker>
       ))}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 };
