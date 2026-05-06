@@ -64,7 +64,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
   });
   const customAlertIcon = L.icon({
     iconUrl:alertPin,
-    iconSize: [36,36]
+    iconSize: [32,32]
   })
   if (loading)
     return (
