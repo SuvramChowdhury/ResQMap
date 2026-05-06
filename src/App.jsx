@@ -7,11 +7,11 @@ import { initAuth } from "./firebase/auth.js";
 import { useLiveLocation } from "./hooks/useLiveLocation.js";
 import { useReports } from "./firebase/useReports.js";
 import { requestNotificationPermission } from "./utils/notify.js";
-
+export const ReportData = createContext();
 const App = () => {
   const { coords, error, loading } = useLiveLocation();
-  const { reports } = useReports(coords);
-  const ReportData = createContext();
+  const { reports, isLoading, isError } = useReports(coords);
+  
   const [uid, setUid] = useState(null);
   useEffect(() => {
     const setupAuth = async () => {
@@ -29,7 +29,7 @@ const App = () => {
       <Navbar2 />
 
       {/*Providing Context to Both Map And Footer Component */}
-      <ReportData.Provider value={reports}>
+      <ReportData.Provider value={{ reports, isLoading, isError }}>
         <div className="flex-1 relative">
           <Map
             coords={coords}

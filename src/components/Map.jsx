@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import L from "leaflet";
 import CustomPopup from "./CustomPopup";
 import pin from "../assets/gps.png";
-
+import alertPin from '../assets/alarm.png'
 const RecenterMap = ({ coords }) => {
   const map = useMap();
   useEffect(() => {
@@ -28,9 +28,12 @@ const RecenterMap = ({ coords }) => {
 const Map = ({ coords, error, loading, reports = [], uid }) => {
   const customIcon = L.icon({
     iconUrl: pin,
-    iconSize: [30, 30],
+    iconSize: [32, 32],
   });
-
+  const customAlertIcon = L.icon({
+    iconUrl:alertPin,
+    iconSize: [36,36]
+  })
   if (loading)
     return (
       <div className="flex items-center justify-center h-full">
@@ -79,7 +82,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
         <Marker
           key={report.id}
           position={[report.lat, report.lng]}
-          icon={customIcon}
+          icon={customAlertIcon}
         >
           <Popup className="custom-popup">
             <CustomPopup report={report} uid={uid} />
