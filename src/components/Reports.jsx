@@ -14,7 +14,7 @@ const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
   const sev = severityStyle[intensity] || severityStyle.Medium;
   console.log(upvotes)
     return(
-        <div className=" rounded-2xl px-2 bg-gray-800 border-4 border-gray-600 text-gray-200 w-full select-none h-full
+        <div className=" rounded-2xl px-2 bg-gray-900 border-4 border-gray-300 text-gray-200 w-full select-none h-full
         flex flex-row items-center justify-center gap-6
         md:w-max md:h-full md:gap-2
         xl:gap-4">
@@ -37,7 +37,7 @@ const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
                 <CircleArrowDown size={15} color="red"/><span className="text-lg text-red-500">{downvotes?? 0}</span>
               </div>
             </div>
-            <div className="text-sm shrink-0">{createdAt}</div>
+            <div className="text-lg shrink-0">{createdAt}</div>
             
         </div>
     )
