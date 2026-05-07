@@ -22,11 +22,11 @@ const NearbyReports = ()=>{
             
             {reports.map((report)=>(
                 <Reports 
-                    id={report.id}
+                    key={report.id}
                     description ={report.description}
                     intensity= {report.intensity}
-                    upvote={report.upvote}
-                    downvote= {report.downvote}
+                    upvotes={report.upvotes}
+                    downvotes= {report.downvotes}
                     createdAt={timeAgo(report.createdAt)} />
             ))}
           

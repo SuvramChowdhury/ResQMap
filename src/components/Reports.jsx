@@ -9,10 +9,10 @@ const severityStyle = {
   Medium: { color: "#fbbf24" },
   Low: { color: "#4ade80" },
 };
-const Reports = ({id,description,intensity,upvote,downvote,createdAt})=>{
+const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
   console.log(intensity)
   const sev = severityStyle[intensity] || severityStyle.Medium;
-
+  console.log(upvotes)
     return(
         <div className=" rounded-2xl px-2 bg-gray-800 border-4 border-gray-600 text-gray-200 w-full select-none h-full
         flex flex-row items-center justify-center gap-6
@@ -31,10 +31,10 @@ const Reports = ({id,description,intensity,upvote,downvote,createdAt})=>{
             {/*Vote section */}
             <div className="flex gap-3">
               <div className="flex items-center gap-1.5">
-                <CircleArrowUp size={15} color="lightgreen"/><span className="text-lg text-green-400">{upvote?? 0}</span>
+                <CircleArrowUp size={15} color="lightgreen"/><span className="text-lg text-green-400">{upvotes?? 0}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CircleArrowDown size={15} color="red"/><span className="text-lg text-red-500">{downvote?? 0}</span>
+                <CircleArrowDown size={15} color="red"/><span className="text-lg text-red-500">{downvotes?? 0}</span>
               </div>
             </div>
             <div className="text-sm shrink-0">{createdAt}</div>
