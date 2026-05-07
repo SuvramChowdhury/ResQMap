@@ -15,7 +15,12 @@ import pin from "../assets/gps.png";
 import alertPin from '../assets/alarm.png'
 
 const clusterIcon = (cluster) => {
-  const count = cluster.getChildCount();
+  //const count = cluster.getChildCount();
+  const markers = cluster.getAllChildMarkers();
+
+  const userMarkerExists = markers.some((marker)=>marker.options.isUserLocation)
+
+  const count = markers.length - (userMarkerExists ? 1 : 0);
 
   let color = "#22c55e"; // low
   if (count >= 3) color = "#f59e0b";
@@ -36,7 +41,7 @@ const clusterIcon = (cluster) => {
           font-weight:bold;
         "
       >
-        ${count}
+        ${count-1}
       </div>
     `,
     className: "",
