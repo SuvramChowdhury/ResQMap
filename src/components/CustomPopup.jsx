@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import { voteReport } from "../firebase/voteReport";
+import { timeAgo } from "../utils/timeAgo";
 
 const severityStyle = {
   Critical: { color: "#ff4d4f" },
   High: { color: "#ff4d4f" },
   Medium: { color: "#fbbf24" },
   Low: { color: "#4ade80" },
-};
-
-const timeAgo = (ts) => {
-  if (!ts?.toMillis) return "Just now";
-  const s = Math.floor((Date.now() - ts.toMillis()) / 1000);
-  if (s < 60) return `${s}s ago`;
-  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-  return `${Math.floor(s / 3600)}h ago`;
 };
 
 const ThumbUp = () => (

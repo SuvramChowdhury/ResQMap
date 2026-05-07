@@ -1,5 +1,4 @@
 import Navbar from "./components/Navbar.jsx";
-import Navbar2 from "./components/Navbar2.jsx";
 import Map from "./components/Map.jsx";
 import Footer from "./components/Footer.jsx";
 import { useEffect, createContext, useState } from "react";
@@ -7,16 +6,26 @@ import { initAuth } from "./firebase/auth.js";
 import { useLiveLocation } from "./hooks/useLiveLocation.js";
 import { useReports } from "./firebase/useReports.js";
 import { requestNotificationPermission } from "./utils/notify.js";
+
 export const ReportData = createContext();
+
 const App = () => {
-  const { coords, error, loading } = useLiveLocation();
-  const { reports, isLoading, isError } = useReports(coords);
-  
+  const {
+    coords,
+    error: locationError,
+    loading: locationLoading,
+  } = useLiveLocation();
+  const {
+    reports,
+    loading: reportsLoading,
+    error: reportsError,
+  } = useReports(coords);
+
   const [uid, setUid] = useState(null);
+
   useEffect(() => {
     const setupAuth = async () => {
       const resolvedUid = await initAuth();
-      console.log("User ID:", resolvedUid);
       setUid(resolvedUid);
     };
     setupAuth();
@@ -26,15 +35,15 @@ const App = () => {
   return (
     <div className="h-screen flex flex-col">
       <Navbar />
-      <Navbar2 />
 
-      {/*Providing Context to Both Map And Footer Component */}
-      <ReportData.Provider value={{ reports, isLoading, isError }}>
+      <ReportData.Provider
+        value={{ reports, isLoading: reportsLoading, isError: reportsError }}
+      >
         <div className="flex-1 relative">
           <Map
             coords={coords}
-            error={error}
-            loading={loading}
+            error={locationError}
+            loading={locationLoading}
             reports={reports}
             uid={uid}
           />
