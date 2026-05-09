@@ -39,7 +39,7 @@ const App = () => {
       <ReportData.Provider
         value={{ reports, isLoading: reportsLoading, isError: reportsError }}
       >
-        <div className="flex-1 relative">
+        <div className="flex-1 relative ">
           <Map
             coords={coords}
             error={locationError}
