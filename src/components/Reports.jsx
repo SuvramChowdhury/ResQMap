@@ -1,5 +1,5 @@
 import React from "react"
-import { CircleArrowDown , CircleArrowUp} from "lucide-react"
+import { ThumbsDown , ThumbsUp} from "lucide-react"
 import warningLogo from '../assets/warning.png'
 import { useContext } from "react"
 
@@ -31,10 +31,11 @@ const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
             {/*Vote section */}
             <div className="flex gap-2">
               <div className="flex items-center gap-1.5">
-                <CircleArrowUp size={15} color="lightgreen"/><span className="text-lg text-green-400">{upvotes?? 0}</span>
+                <ThumbsUp size={15} color="lightgreen"/><span className="text-lg text-green-400">{upvotes?? 0}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CircleArrowDown size={15} color="red"/><span className="text-lg text-red-500">{downvotes?? 0}</span>
+                <ThumbsDown size={15} color="red"/><span className="text-lg text-red-500">{downvotes?? 0}</span>
+                
               </div>
             </div>
             <div className="text-lg shrink-0">{createdAt}</div>
