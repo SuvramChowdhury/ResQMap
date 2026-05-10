@@ -6,8 +6,6 @@ import {
   where,
   orderBy,
   Timestamp,
-  writeBatch,
-  doc,
 } from "firebase/firestore";
 import { db } from "./firestore";
 import { getDistance } from "../utils/distance";
@@ -39,21 +37,9 @@ export const useReports = (userCoords) => {
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const now = Timestamp.now();
-        const batch = writeBatch(db);
-        let hasDeletions = false;
-
         const data = snapshot.docs
           .map((d) => ({ id: d.id, ...d.data() }))
           .filter((report) => {
-            // cleanup expired
-            if (report.expiresAt.seconds <= now.seconds) {
-              batch.delete(doc(db, "reports", report.id));
-              hasDeletions = true;
-              return false;
-            }
-
-            // precise 500m circle filter
             const dist = getDistance(userCoords, {
               lat: report.lat,
               lng: report.lng,
@@ -61,9 +47,6 @@ export const useReports = (userCoords) => {
             return dist <= RADIUS_M;
           });
 
-        if (hasDeletions) batch.commit();
-
-        // notify for new reports only
         data.forEach((report) => {
           if (!seenIds.current.has(report.id)) {
             sendNotification(report);

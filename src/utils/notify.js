@@ -9,8 +9,8 @@ export const sendNotification = (report) => {
 
   new Notification("🚨 Nearby Emergency", {
     body: `${report.intensity}: ${report.description}`,
-    icon: "/favicon.svg",
-    badge: "/favicon.svg",
+    icon: "/icon.svg",
+    badge: "/icon.svg",
     tag: report.id,
   });
 };

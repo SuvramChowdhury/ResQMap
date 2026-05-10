@@ -50,7 +50,7 @@ const App = () => {
     };
     setupAuth();
     requestNotificationPermission();
-    cleanupExpiredReports();
+    cleanupExpiredReports().catch(console.error);
   }, []);
 
   return (

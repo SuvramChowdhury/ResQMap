@@ -10,10 +10,9 @@ const ReportForm = ({ onClose, coords }) => {
     setIntensity,
     photo,
     photoPreview,
-    uploading, 
+    uploading,
     submitting,
     error,
-    isMobile,
     handlePhoto,
     handleSubmit,
   } = useReportForm(coords, onClose);
@@ -83,7 +82,7 @@ const ReportForm = ({ onClose, coords }) => {
               <input
                 type="file"
                 accept="image/*"
-                {...(isMobile ? { capture: "environment" } : {})}
+                capture="environment"
                 className="hidden"
                 onChange={handlePhoto}
               />
