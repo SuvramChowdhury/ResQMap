@@ -1,42 +1,52 @@
-import React, {useContext ,useMemo } from 'react'
-import Reports from './Reports';
-import { ReportData } from '../App';
+import { useContext, useMemo } from "react";
+import Reports from "./Reports";
+import { ReportData } from "../App";
+import { timeAgo } from "../utils/timeAgo";
 
-const timeAgo = (ts) => {
-  if (!ts?.toMillis) return "Just now";
-  const s = Math.floor((Date.now() - ts.toMillis()) / 1000);
-  if (s < 60) return `${s}s ago`;
-  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-  return `${Math.floor(s / 3600)}h ago`;
+const NearbyReports = () => {
+  const { reports = [], isLoading, isError } = useContext(ReportData);
+
+  const sortedReports = useMemo(() => {
+    return [...reports].sort((a, b) => b.upvotes - a.upvotes);
+  }, [reports]);
+
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+        <p className="text-white font-semibold">Loading...</p>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+        <p className="text-white font-semibold">Failed to load reports.</p>
+      </div>
+    );
+
+  if (sortedReports.length === 0)
+    return (
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+        <p className="text-white font-semibold">No hazards nearby.</p>
+      </div>
+    );
+
+  return (
+    <div className="py-0.5 px-2 bg-red-600 w-full h-3/4
+      flex flex-row gap-2 items-center justify-start rounded-r-xl overflow-auto font-semibold
+      md:text-lg md:h-full md:overflow-auto flex-wrap lg:h-full lg:overflow-x-auto">
+      {sortedReports.map((report) => (
+        <Reports
+          key={report.id}
+          description={report.description}
+          intensity={report.intensity}
+          upvotes={report.upvotes}
+          downvotes={report.downvotes}
+          createdAt={timeAgo(report.createdAt)}
+        />
+      ))}
+    </div>
+  );
 };
-
-const NearbyReports = ()=>{
-    const { reports=[], isLoading, isError } = useContext(ReportData)
-    const sortedReports = useMemo(() => {
-        return [...reports].sort(
-            (a, b) => b.upvotes - a.upvotes
-        )
-    }, [reports])
-    console.log(reports)
-    return(
-        <div className=" py-0.5 px-2 bg-red-600 w-full h-3/4
-       flex flex-row gap-2 items-center justify-start rounded-r-xl overflow-auto font-semibold
-        md:text-lg md:h-full md:overflow-auto
-        flex-wrap lg:h-full lg:overflow-x-auto">
-            
-            {sortedReports.map((report)=>(
-                <Reports 
-                    key={report.id}
-                    description ={report.description}
-                    intensity= {report.intensity}
-                    upvotes={report.upvotes}
-                    downvotes= {report.downvotes}
-                    createdAt={timeAgo(report.createdAt)} />
-            ))}
-          
-          
-        </div>
-    )
-}
 
 export default NearbyReports;

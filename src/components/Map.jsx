@@ -13,6 +13,7 @@ import L from "leaflet";
 import CustomPopup from "./CustomPopup";
 import pin from "../assets/gps.png";
 import alertPin from '../assets/alarm.png'
+import Recenter from "./Recenter";
 
 const clusterIcon = (cluster) => {
   //const count = cluster.getChildCount();
@@ -93,6 +94,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
     );
 
   return (
+    <div className="relative h-full w-full">
     <MapContainer
       center={[coords.lat, coords.lng]}
       zoom={16}
@@ -128,7 +130,11 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
         </Marker>
       ))}
       </MarkerClusterGroup>
+      {/*ReCenter button */}
+      <Recenter userLocation={coords}/>
     </MapContainer>
+    
+    </div>
   );
 };
 
