@@ -3,9 +3,9 @@ import { voteReport } from "../firebase/voteReport";
 import { timeAgo } from "../utils/timeAgo";
 
 const severityStyle = {
-  Critical: { color: "#ff4d4f" },
+  Critical: { color: "#dc2626" },
   High: { color: "#ff4d4f" },
-  Medium: { color: "#fbbf24" },
+  Moderate: { color: "#fbbf24" },
   Low: { color: "#4ade80" },
 };
 
@@ -40,10 +40,9 @@ const ThumbDown = () => (
 const CustomPopup = ({ report, uid }) => {
   const [voting, setVoting] = useState(false);
 
-  // ✅ prevent crash if report not loaded yet
   if (!report) return null;
 
-  const sev = severityStyle[report?.intensity] || severityStyle.Medium;
+  const sev = severityStyle[report?.intensity] || severityStyle.Moderate;
 
   const handleVote = async (type) => {
     if (voting || !uid) return;
@@ -71,7 +70,6 @@ const CustomPopup = ({ report, uid }) => {
         margin: "-14px -20px",
       }}
     >
-      {/* Image Section */}
       <div style={{ position: "relative" }}>
         {report.photoURL ? (
           <img
@@ -99,7 +97,6 @@ const CustomPopup = ({ report, uid }) => {
           </div>
         )}
 
-        {/* Soft gradient */}
         <div
           style={{
             position: "absolute",
@@ -109,7 +106,6 @@ const CustomPopup = ({ report, uid }) => {
           }}
         />
 
-        {/* Severity badge */}
         <div
           style={{
             position: "absolute",
@@ -128,9 +124,8 @@ const CustomPopup = ({ report, uid }) => {
         </div>
       </div>
 
-      {/* Content */}
       <div style={{ padding: "14px" }}>
-        {/* Time */}
+
         <div
           style={{
             fontSize: "12px",
@@ -141,7 +136,6 @@ const CustomPopup = ({ report, uid }) => {
           {timeAgo(report.createdAt)}
         </div>
 
-        {/* Description */}
         <p
           style={{
             margin: "0 0 14px",
@@ -154,7 +148,6 @@ const CustomPopup = ({ report, uid }) => {
           {report.description || "No description"}
         </p>
 
-        {/* Vote Buttons */}
         <div
           style={{
             display: "flex",

@@ -6,8 +6,29 @@ import { initAuth } from "./firebase/auth.js";
 import { useLiveLocation } from "./hooks/useLiveLocation.js";
 import { useReports } from "./firebase/useReports.js";
 import { requestNotificationPermission } from "./utils/notify.js";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  writeBatch,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "./firebase/firestore";
 
 export const ReportData = createContext();
+
+const cleanupExpiredReports = async () => {
+  const q = query(
+    collection(db, "reports"),
+    where("expiresAt", "<", Timestamp.now()),
+  );
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) return;
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((doc) => batch.delete(doc.ref));
+  await batch.commit();
+};
 
 const App = () => {
   const {
@@ -20,7 +41,6 @@ const App = () => {
     loading: reportsLoading,
     error: reportsError,
   } = useReports(coords);
-
   const [uid, setUid] = useState(null);
 
   useEffect(() => {
@@ -30,16 +50,16 @@ const App = () => {
     };
     setupAuth();
     requestNotificationPermission();
+    cleanupExpiredReports();
   }, []);
 
   return (
     <div className="h-screen flex flex-col">
       <Navbar />
-
       <ReportData.Provider
         value={{ reports, isLoading: reportsLoading, isError: reportsError }}
       >
-        <div className="flex-1 relative ">
+        <div className="flex-1 relative">
           <Map
             coords={coords}
             error={locationError}

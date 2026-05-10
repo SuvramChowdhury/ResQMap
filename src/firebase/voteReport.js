@@ -1,5 +1,8 @@
 import { db } from "./firestore.js";
-import { doc, runTransaction } from "firebase/firestore";
+import { doc, runTransaction, Timestamp } from "firebase/firestore";
+
+const MAX_EXPIRY_MS = 3 * 60 * 60 * 1000;    // 3 hour hard cap
+const UPVOTE_EXTENSION_MS = 30 * 60 * 1000;  // +30 min per upvote
 
 export const voteReport = async (reportId, voteType, uid) => {
   if (voteType !== "up" && voteType !== "down") {
@@ -31,6 +34,23 @@ export const voteReport = async (reportId, voteType, uid) => {
       else downvotes++;
     }
 
-    transaction.update(reportRef, { upvotes, downvotes, votedBy });
+    // Delete instantly on 5 downvotes
+    if (downvotes >= 5) {
+      transaction.delete(reportRef);
+      return;
+    }
+
+    const updates = { upvotes, downvotes, votedBy };
+
+    // Extend expiry on a fresh upvote (not when toggling off)
+    if (voteType === "up" && previousVote !== "up") {
+      const currentExpiry = data.expiresAt.toMillis();
+      const createdAt = data.createdAt.toMillis();
+      const maxExpiry = createdAt + MAX_EXPIRY_MS;
+      const newExpiry = Math.min(currentExpiry + UPVOTE_EXTENSION_MS, maxExpiry);
+      updates.expiresAt = Timestamp.fromMillis(newExpiry);
+    }
+
+    transaction.update(reportRef, updates);
   });
 };
