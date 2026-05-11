@@ -32,7 +32,7 @@ function Recenter({ userLocation }) {
     <button
       onClick={handleRecenter}
       className="
-        absolute bottom-1/5 right-20 z-2147483647
+        absolute top-10 right-10 z-2147483647
         w-14 h-14 rounded-full
         bg-gray-950/80 backdrop-blur-md
         border-2 border-red-500/70
