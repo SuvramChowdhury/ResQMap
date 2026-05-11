@@ -218,17 +218,12 @@ Expired reports can be removed automatically.
 
 # 🖼️ Screenshots
 
-Add screenshots inside a `screenshots` folder in your project.
+| | |
+|---|---|
+| ![Home](./screenshots/home.png) | ![Live Map](./screenshots/map.png) |
+| ![Report Form](./screenshots/report-form.png) | ![Pop Up](./screenshots/popup.png) |
 
-Example:
-
-```md
-![Home](./screenshots/home.png)
-![Live Map](./screenshots/map.png)
-![Emergency Form](./screenshots/report-form.png)
-![Pop Up](./screenshots/popup.png)
 ![Cluster View](./screenshots/cluster.png)
-```
 
 ---
 
