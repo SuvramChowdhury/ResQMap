@@ -15,7 +15,7 @@ const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
   console.log(upvotes)
     return(
         <div className=" rounded-2xl px-2 bg-gray-900 border-4 border-gray-300 text-gray-200 w-full select-none h-full
-        flex flex-row items-center justify-center gap-6
+        flex flex-row items-center justify-center gap-4
         md:w-max md:h-full md:gap-2
         xl:gap-3">
             {/*Heading */}
