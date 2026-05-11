@@ -232,7 +232,6 @@ Expired reports can be removed automatically.
 - AI-based fake report detection
 - SOS emergency alert system
 - Heatmap analytics
-- Push notifications
 - Admin dashboard
 - User reputation system
 - Progressive Web App (PWA)
