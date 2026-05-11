@@ -50,7 +50,7 @@ const Navbar = () => {
         </svg>
 
         {/* Tagline — all screen sizes, bigger on desktop */}
-        <p className="text-base md:text-base font-semibold text-gray-400 tracking-wide">
+        <p className="text-[11px] md:text-base font-semibold text-gray-400 tracking-wide whitespace-nowrap">
           See It. Report It. Save Someone.
         </p>
       </div>
