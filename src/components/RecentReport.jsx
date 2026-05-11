@@ -35,7 +35,7 @@ const RecentReport = () => {
 
   return (
     <div className="py-0.5 px-2 bg-red-600 w-full h-3/4
-      flex flex-row gap-2 items-center justify-start rounded-r-xl overflow-auto font-semibold
+      flex flex-row gap-2 items-center justify-start overflow-auto font-semibold
       md:text-lg md:h-full md:overflow-auto flex-wrap lg:h-full lg:overflow-x-auto">
       {sortedReports.map((report) => (
         <Reports
