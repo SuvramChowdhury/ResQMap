@@ -15,30 +15,30 @@ const Reports = ({description,intensity,upvotes,downvotes,createdAt})=>{
   console.log(upvotes)
     return(
         <div className=" rounded-2xl px-2 bg-gray-900 border-4 border-gray-300 text-gray-200 w-full select-none h-full
-        flex flex-row items-center justify-center gap-6
+        flex flex-row items-center justify-center gap-4
         md:w-max md:h-full md:gap-2
         xl:gap-3">
             {/*Heading */}
             
                 <div className="flex gap-1 xl:gap-4">
                     <img src={warningLogo}  alt="" className="h-6"/>
-                    <h1 className="font-extrabold text-xl" style={{color:sev.color}}>{intensity}</h1>
+                    <h1 className="font-extrabold text-lg md:text-xl" style={{color:sev.color}}>{intensity}</h1>
                 </div>
                 {/*Report Description*/}
-                <div className="text-lg text-gray-50 shrink-0">{description}</div>
+                <div className="text-sm md:text-lg text-gray-50 shrink-0">{description}</div>
             
             
             {/*Vote section */}
-            <div className="flex gap-2">
+            <div className="flex gap-1 md:gap-2">
               <div className="flex items-center gap-1.5">
-                <ThumbsUp size={15} color="lightgreen"/><span className="text-lg text-green-400">{upvotes?? 0}</span>
+                <ThumbsUp size={15} color="lightgreen"/><span className="text-sm md:text-lg text-green-400">{upvotes?? 0}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ThumbsDown size={15} color="red"/><span className="text-lg text-red-500">{downvotes?? 0}</span>
+                <ThumbsDown size={15} color="red"/><span className="text-sm md:text-lg text-red-500">{downvotes?? 0}</span>
                 
               </div>
             </div>
-            <div className="text-lg shrink-0">{createdAt}</div>
+            <div className="text-sm md:text-lg shrink-0">{createdAt}</div>
             
         </div>
     )
