@@ -6,20 +6,22 @@ import {
   useMap,
   Circle,
 } from "react-leaflet";
-import MarkerClusterGroup from 'react-leaflet-cluster'
+import MarkerClusterGroup from "react-leaflet-cluster";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect } from "react";
 import L from "leaflet";
 import CustomPopup from "./CustomPopup";
 import pin from "../assets/gps.png";
-import alertPin from '../assets/alarm.png'
+import alertPin from "../assets/alarm.png";
 import Recenter from "./Recenter";
 
 const clusterIcon = (cluster) => {
   //const count = cluster.getChildCount();
   const markers = cluster.getAllChildMarkers();
 
-  const userMarkerExists = markers.some((marker)=>marker.options.isUserLocation)
+  const userMarkerExists = markers.some(
+    (marker) => marker.options.isUserLocation,
+  );
 
   const count = markers.length - (userMarkerExists ? 1 : 0);
 
@@ -42,7 +44,7 @@ const clusterIcon = (cluster) => {
           font-weight:bold;
         "
       >
-        ${count-1}
+        ${count - 1}
       </div>
     `,
     className: "",
@@ -69,9 +71,9 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
     iconSize: [32, 32],
   });
   const customAlertIcon = L.icon({
-    iconUrl:alertPin,
-    iconSize: [32,32]
-  })
+    iconUrl: alertPin,
+    iconSize: [32, 32],
+  });
   if (loading)
     return (
       <div className="flex items-center justify-center h-full">
@@ -95,45 +97,47 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
 
   return (
     <div className="relative h-full w-full">
-    <MapContainer
-      center={[coords.lat, coords.lng]}
-      zoom={16}
-      style={{ height: "100%", width: "100%" }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <RecenterMap coords={coords} />
-
-      <Circle
+      <MapContainer
         center={[coords.lat, coords.lng]}
-        radius={500}
-        pathOptions={{ color: "red" }}
-      />
-      <MarkerClusterGroup iconCreateFunction={clusterIcon} spiderfyDistanceMultiplier={0.2}>
-      {/* Your location marker */}
-      <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
-        <Popup>You are here</Popup>
-      </Marker>
+        zoom={16}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <RecenterMap coords={coords} />
 
-      {/* Report markers from Firestore */}
-      {reports.map((report) => (
-        <Marker
-          key={report.id}
-          position={[report.lat, report.lng]}
-          icon={customAlertIcon}
+        <Circle
+          center={[coords.lat, coords.lng]}
+          radius={500}
+          pathOptions={{ color: "red" }}
+        />
+        <MarkerClusterGroup
+          iconCreateFunction={clusterIcon}
+          spiderfyDistanceMultiplier={0.2}
         >
-          <Popup className="custom-popup">
-            <CustomPopup report={report} uid={uid} />
-          </Popup>
-        </Marker>
-      ))}
-      </MarkerClusterGroup>
-      {/*ReCenter button */}
-      <Recenter userLocation={coords}/>
-    </MapContainer>
-    
+          {/* Your location marker */}
+          <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
+            <Popup>You are here</Popup>
+          </Marker>
+
+          {/* Report markers from Firestore */}
+          {reports.map((report) => (
+            <Marker
+              key={report.id}
+              position={[report.lat, report.lng]}
+              icon={customAlertIcon}
+            >
+              <Popup className="custom-popup">
+                <CustomPopup report={report} uid={uid} />
+              </Popup>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
+        {/*ReCenter button */}
+        <Recenter userLocation={coords} />
+      </MapContainer>
     </div>
   );
 };
