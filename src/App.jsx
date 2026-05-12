@@ -31,17 +31,13 @@ const cleanupExpiredReports = async () => {
 };
 
 const App = () => {
-  const {
-    coords,
-    error: locationError,
-    loading: locationLoading,
-  } = useLiveLocation();
-  const {
-    reports,
-    loading: reportsLoading,
-    error: reportsError,
-  } = useReports(coords);
+  const { coords, error: locationError, loading: locationLoading } = useLiveLocation();
+
+  
   const [uid, setUid] = useState(null);
+  const { reports, loading: reportsLoading, error: reportsError } = useReports(
+    uid ? coords : null
+  );
 
   useEffect(() => {
     const setupAuth = async () => {
