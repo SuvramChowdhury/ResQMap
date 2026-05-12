@@ -20,19 +20,27 @@ export const useReports = (userCoords) => {
   const seenIds = useRef(new Set());
 
   useEffect(() => {
-    if (!userCoords) return;
+    let q;
 
-    const latDelta = RADIUS_M / 111000;
-    const lngDelta =
-      RADIUS_M / (111000 * Math.cos(userCoords.lat * (Math.PI / 180)));
-
-    const q = query(
-      collection(db, "reports"),
-      where("expiresAt", ">", Timestamp.now()),
-      where("lat", ">", userCoords.lat - latDelta),
-      where("lat", "<", userCoords.lat + latDelta),
-      orderBy("lat", "asc")
-    );
+    if (userCoords) {
+      const latDelta = RADIUS_M / 111000;
+      const lngDelta =
+        RADIUS_M / (111000 * Math.cos(userCoords.lat * (Math.PI / 180)));
+      q = query(
+        collection(db, "reports"),
+        where("expiresAt", ">", Timestamp.now()),
+        where("lat", ">", userCoords.lat - latDelta),
+        where("lat", "<", userCoords.lat + latDelta),
+        orderBy("lat", "asc"),
+      );
+    } else {
+      // No location yet — fetch all active reports globally
+      q = query(
+        collection(db, "reports"),
+        where("expiresAt", ">", Timestamp.now()),
+        orderBy("expiresAt", "asc"),
+      );
+    }
 
     const unsubscribe = onSnapshot(
       q,
@@ -40,6 +48,7 @@ export const useReports = (userCoords) => {
         const data = snapshot.docs
           .map((d) => ({ id: d.id, ...d.data() }))
           .filter((report) => {
+            if (!userCoords) return true;
             const dist = getDistance(userCoords, {
               lat: report.lat,
               lng: report.lng,
@@ -62,7 +71,7 @@ export const useReports = (userCoords) => {
         console.error("Firestore snapshot error:", err);
         setError("Failed to load reports.");
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
