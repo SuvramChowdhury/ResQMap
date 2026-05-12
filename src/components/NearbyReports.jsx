@@ -12,21 +12,21 @@ const NearbyReports = () => {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600  md:h-full">
         <p className="text-white font-semibold">Loading...</p>
       </div>
     );
 
   if (isError)
     return (
-      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600  md:h-full">
         <p className="text-white font-semibold">Failed to load reports.</p>
       </div>
     );
 
   if (sortedReports.length === 0)
     return (
-      <div className="flex items-center justify-center w-full h-3/4 bg-red-600 rounded-r-xl md:h-full">
+      <div className="flex items-center justify-center w-full h-3/4 bg-red-600  md:h-full">
         <p className="text-white font-semibold">No hazards nearby.</p>
       </div>
     );

@@ -111,7 +111,7 @@ const Map = ({ coords, error, loading, reports = [], uid }) => {
         radius={500}
         pathOptions={{ color: "red" }}
       />
-      <MarkerClusterGroup iconCreateFunction={clusterIcon}>
+      <MarkerClusterGroup iconCreateFunction={clusterIcon} spiderfyDistanceMultiplier={0.2}>
       {/* Your location marker */}
       <Marker position={[coords.lat, coords.lng]} icon={customIcon}>
         <Popup>You are here</Popup>
